@@ -1,8 +1,8 @@
 cask "gmic-affinity" do
-  version "0.2.0"
+  version "0.3.0"
   # Set automatically by the per-release tap PR. To compute locally:
   #   curl -sL https://github.com/dstrupl/gmic-affinity/releases/download/v#{version}/GmicFilter-v#{version}.zip | shasum -a 256
-  sha256 "2288000f1016562e8f10a19b5f38d5b86de48941546289e71415126277cfbc62"
+  sha256 "b993b6d7b70c9ee81aebcc0bc41a61dbde9df50048d5737708550803e966e23b"
 
   url "https://github.com/dstrupl/gmic-affinity/releases/download/v#{version}/GmicFilter-v#{version}.zip"
   name "G'MIC for Affinity Photo"
