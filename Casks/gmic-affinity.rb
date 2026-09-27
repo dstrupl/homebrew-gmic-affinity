@@ -24,15 +24,26 @@ cask "gmic-affinity" do
   # authoritative macOS 11 runtime floor.
   depends_on :macos
 
-  # Install one source bundle into both Affinity plugin folders. If
-  # `brew audit --cask` rejects two `artifact` stanzas pointing at the
-  # same source path, fall back to a single `artifact` plus a
-  # `preflight` block doing the second copy with FileUtils.cp_r — see
-  # release design doc §5.2 risk #3.
+  # Homebrew manages the Photo 2 copy as the bundle artifact. A structured
+  # postflight step makes the independent v3 copy: declaring the same source
+  # twice works on a fresh install but collides while Homebrew backs up the
+  # predecessor cask during an upgrade.
   artifact "GmicFilter-v#{version}/GmicFilter.plugin",
            target: "~/Library/Application Support/Affinity Photo 2/Plugins/GmicFilter.plugin"
-  artifact "GmicFilter-v#{version}/GmicFilter.plugin",
-           target: "~/Library/Application Support/Affinity/Plugins/GmicFilter.plugin"
+
+  postflight_steps do
+    copy "Library/Application Support/Affinity Photo 2/Plugins/GmicFilter.plugin",
+         "Library/Application Support/Affinity/Plugins/GmicFilter.plugin",
+         source_base: :home,
+         target_base: :home,
+         recursive:   true
+  end
+
+  uninstall_postflight_steps do
+    remove "Library/Application Support/Affinity/Plugins/GmicFilter.plugin",
+           base:      :home,
+           recursive: true
+  end
 
   caveats <<~EOS
     G'MIC for Affinity is installed for Affinity Photo 2 and Affinity Photo v3.
