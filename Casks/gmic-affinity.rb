@@ -1,8 +1,8 @@
 cask "gmic-affinity" do
-  version "0.3.0"
+  version "0.3.1"
   # Set automatically by the per-release tap PR. To compute locally:
   #   curl -sL https://github.com/dstrupl/gmic-affinity/releases/download/v#{version}/GmicFilter-v#{version}.zip | shasum -a 256
-  sha256 "b993b6d7b70c9ee81aebcc0bc41a61dbde9df50048d5737708550803e966e23b"
+  sha256 "66ac6b48a76ea1f2a2c7a80fede89a62a6847e2cb543c407d4bc5d5a73b12350"
 
   url "https://github.com/dstrupl/gmic-affinity/releases/download/v#{version}/GmicFilter-v#{version}.zip"
   name "G'MIC for Affinity Photo"
@@ -19,11 +19,10 @@ cask "gmic-affinity" do
   # is unrelated to this plugin; users who want it can grab it from
   # https://gmic.eu/download.html separately.
   depends_on formula: "gmic"
-  # `:big_sur` (bare symbol) is the modern lower-bound form. brew
-  # style rejects the older `">= :big_sur"` string-comparator shape
-  # under Homebrew/OSDependsOn — the bare symbol means "this macOS or
-  # later", which is what we want.
-  depends_on macos: :big_sur
+  # Current Homebrew rejects redundant minimum macOS versions under
+  # Homebrew/OSDependsOn. The bundle's LSMinimumSystemVersion remains the
+  # authoritative macOS 11 runtime floor.
+  depends_on :macos
 
   # Install one source bundle into both Affinity plugin folders. If
   # `brew audit --cask` rejects two `artifact` stanzas pointing at the
